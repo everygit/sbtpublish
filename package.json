@@ -1,6 +1,6 @@
 {
   "name": "sbtpublish",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "Publish the project file to the specified folder, and then it can be easily deployed to the server through tools such as FTP",
   "main": "index.js",
   "bin": {
@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/everygit/sbtpublish#readme",
   "dependencies": {
+    "@xiaoerr/io": "^0.0.3",
     "colors": "^1.4.0",
     "commander": "^4.0.1"
   }

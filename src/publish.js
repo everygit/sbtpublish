@@ -1,5 +1,7 @@
 const program = require('commander');
 const path = require('path');
+const fs = require('fs');
+const { mkdirsSync, rmdirsSync, cpdirsSync } = require('@xiaoerr/io');
 require('colors');
 
 program
@@ -14,18 +16,63 @@ let cnf,
 
 print('Start publishing files...'.green);
 
-if(config) {
-    print('Release configuration file path: '.yellow + config);
-    cnf = normalizeConfig(config);
-} else {
-    print('No publishing profile is set, the file will be published with default settings'.red);
-    cnf = {
-        output: path.resolve(appRoot, 'sbtpublish')
+publish();
+
+// var p = path.relative(appRoot, path.resolve(appRoot, 'build', 'cc'));
+// print('/' + p.replace(/\\/g, '/').red)
+
+/**
+ * Publishing project files
+ */
+function publish() {
+    if (config) {
+        print('Release configuration file path: '.yellow + config);
+        cnf = normalizeConfig(config);
+    } else {
+        // load default config
+        print('No publishing profile is set, the file will be published with default settings'.red);
+        cnf = require('../sbtpublish.config')(appRoot);
+        // print some config values
+        print('Output path: '.yellow + cnf.output);
     }
-    print('Output path: '.yellow + cnf.output);
+
+    // initialize dirs
+    if (fs.existsSync(cnf.output))
+        rmdirsSync(cnf.output);
+    mkdirsSync(cnf.output);
+
+    let isAllowCopy = (filepath) => {
+        let p = getRelativePath(appRoot, filepath);
+        let publishDir = '/' + getRelativePath(appRoot, cnf.output);
+        var ret = cnf.ignore.concat([
+            '/node_modules',
+            publishDir
+        ]).some(ig => {
+            ig = ig.replace(/\/$/, "");
+            if (/^\//.test(ig)) {
+                var reg = new RegExp('^' + ig.substring(1) + '\\b', 'i');
+                return reg.test(p);
+            } else {
+                var reg = new RegExp('\\b' + ig + '\\b', "i");
+                return reg.test(p);
+            }
+        });
+        return !ret;
+    }
+
+    cpdirsSync(appRoot, cnf.output, isAllowCopy);
+
+    print('Scan all paths...'.green);
 }
 
-print('Scan all paths...'.green);
+
+function getRelativePath(from, to) {
+    let fromAb = path.resolve(from);
+    let toAb = path.resolve(to);
+    let rel = path.relative(fromAb, toAb);
+    return rel.replace(/\\/g, '/');
+}
+
 
 
 /**
@@ -33,7 +80,14 @@ print('Scan all paths...'.green);
  * @param {object} inputConfig Requires a normalized configuration file
  */
 function normalizeConfig(inputConfig) {
-    return {};
+    var n = require(appRoot + '/' + inputConfig);
+    if(!n.output) {
+        n.output = path.resolve(appRoot, 'sbtpublish');
+    }
+    if(!n.ignore) {
+        n.ignore = [];
+    }
+    return n;
 }
 
 /**
@@ -45,3 +99,6 @@ function print(str) {
     var time = `[${now.getHours()}:${now.getMinutes()}:${now.getSeconds()} ${now.getMilliseconds()}] `.magenta;
     console.log(`${time}${str}`);
 }
+
+
+// path.isAbsolute(path)

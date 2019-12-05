@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@xiaoerr/io@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@xiaoerr/io/-/io-0.0.3.tgz#bb9624006230a5f66d027c41d3dc8f7bcb5f735b"
+  integrity sha512-SUPmSFJxG6nIc57c2aOPplMFswPRBlM9df52p8oPOvndtpqfI+HPWXpb0RaYJ0Gfu80irIpi15nhPr2O1P777w==
+
 colors@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/colors/-/colors-1.4.0.tgz#c50491479d4c1bdaed2c9ced32cf7c7dc2360f78"
