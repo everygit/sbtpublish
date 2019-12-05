@@ -1,0 +1,30 @@
+{
+  "name": "sbtpublish",
+  "version": "0.0.4",
+  "description": "Publish the project file to the specified folder, and then it can be easily deployed to the server through tools such as FTP",
+  "main": "index.js",
+  "bin": {
+    "sbtpublish": "./bin/cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/everygit/sbtpublish.git"
+  },
+  "keywords": [
+    "publish",
+    "project"
+  ],
+  "author": "austin.sun",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/everygit/sbtpublish/issues"
+  },
+  "homepage": "https://github.com/everygit/sbtpublish#readme",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "commander": "^4.0.1"
+  }
+}
