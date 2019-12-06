@@ -18,9 +18,6 @@ print('Start publishing files...'.green);
 
 publish();
 
-// var p = path.relative(appRoot, path.resolve(appRoot, 'build', 'cc'));
-// print('/' + p.replace(/\\/g, '/').red)
-
 /**
  * Publishing project files
  */
@@ -45,15 +42,15 @@ function publish() {
         let p = getRelativePath(appRoot, filepath);
         let publishDir = '/' + getRelativePath(appRoot, cnf.output);
         var ret = cnf.ignore.concat([
-            '/node_modules',
+            'node_modules',
             publishDir
         ]).some(ig => {
             ig = ig.replace(/\/$/, "");
             if (/^\//.test(ig)) {
-                var reg = new RegExp('^' + ig.substring(1) + '\\b', 'i');
+                var reg = new RegExp('^' + ig.substring(1).replace(/\./g, '\\.') + '($|\/)', 'i');
                 return reg.test(p);
             } else {
-                var reg = new RegExp('\\b' + ig + '\\b', "i");
+                var reg = new RegExp('(^|\/)' + ig.replace(/\./g, '\\.') + '($|\/)', "i");
                 return reg.test(p);
             }
         });
@@ -99,6 +96,3 @@ function print(str) {
     var time = `[${now.getHours()}:${now.getMinutes()}:${now.getSeconds()} ${now.getMilliseconds()}] `.magenta;
     console.log(`${time}${str}`);
 }
-
-
-// path.isAbsolute(path)

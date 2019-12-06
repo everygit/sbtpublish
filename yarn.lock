@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@xiaoerr/io@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@xiaoerr/io/-/io-0.0.3.tgz#bb9624006230a5f66d027c41d3dc8f7bcb5f735b"
-  integrity sha512-SUPmSFJxG6nIc57c2aOPplMFswPRBlM9df52p8oPOvndtpqfI+HPWXpb0RaYJ0Gfu80irIpi15nhPr2O1P777w==
+"@xiaoerr/io@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@xiaoerr/io/-/io-0.0.5.tgz#ff983b13fa06bd08c94b69f13a608fe1589febce"
+  integrity sha512-G+gEn9ZIe6PIjFjV7F7s2LTE5oO8UhRu3tkGXX2xsAe5KhxI5VdQvhBj0mDmI9pI7Nz2ZQ01X5oEsv+1MSQIBA==
 
 colors@^1.4.0:
   version "1.4.0"

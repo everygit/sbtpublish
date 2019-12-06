@@ -6,3 +6,51 @@
 
 Publish the project file to the specified folder, and then it can be easily deployed to the server through tools such as FTP
 
+# install
+```
+npm install sbtpublish
+```
+# package.json
+
+```json
+{
+  "name": "publish",
+  "scripts": {
+    "sbtpublishconfig": "sbtpublish -c a.config.js",
+    "sbtpublish": "sbtpublish"
+  },
+  "dependencies": {
+    "sbtpublish": "file:D:/sunbt/sbtpublish"
+  }
+}
+```
+
+# a.config.js
+```js
+module.exports = {
+    output: 'cccc',
+    ignore: [
+        'build'
+    ]
+}
+```
+- output  Output folder
+- ignore Ignore published files or folders
+# publish
+```
+npm run sbtpublishconfig
+```
+# default
+```js
+const path = require('path');
+
+module.exports = function (appRoot) {
+    return {
+        output: path.resolve(appRoot, 'sbtpublish'),
+        ignore: [
+
+        ]
+    }
+}
+```
+appRoot is the folder where sbtpublish runs 
