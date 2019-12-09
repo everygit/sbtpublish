@@ -40,6 +40,8 @@ function publish() {
 
     let isAllowCopy = (filepath) => {
         let p = getRelativePath(appRoot, filepath);
+        let stat = fs.statSync(filepath);
+        let isInTime = isModifyWithinCertainTime(stat);
         let publishDir = '/' + getRelativePath(appRoot, cnf.output);
         var ret = cnf.ignore.concat([
             'node_modules',
@@ -54,7 +56,7 @@ function publish() {
                 return reg.test(p);
             }
         });
-        return !ret;
+        return !ret && isInTime;
     }
 
     cpdirsSync(appRoot, cnf.output, isAllowCopy);
@@ -70,6 +72,34 @@ function getRelativePath(from, to) {
     return rel.replace(/\\/g, '/');
 }
 
+/**
+ * Modify within a certain time
+ * @param {Stats|String} stat stats or path
+ */
+function isModifyWithinCertainTime(stat) {
+
+    if (!cnf.lastModify) return true;
+    const reg = /^([0-9.]+)([smhdMy]?)$/.exec(cnf.lastModify);
+    if (!reg) return true;
+
+    const d = {
+        s: 1000,
+        m: 60 * 1000,
+        h: 60 * 60 * 1000,
+        d: 24 * 60 * 60 * 1000,
+        M: 30 * 24 * 60 * 60 * 1000,
+        y: 365 * 24 * 60 * 60 * 1000
+    };
+
+    var t = parseFloat(reg[1]) * d[reg[2] || 's'];
+
+    if (typeof stat === "string") {
+        stat = fs.statSync(stat);
+    }
+
+    return Date.now() - stat.mtimeMs < t
+}
+
 
 
 /**
@@ -78,10 +108,10 @@ function getRelativePath(from, to) {
  */
 function normalizeConfig(inputConfig) {
     var n = require(appRoot + '/' + inputConfig);
-    if(!n.output) {
+    if (!n.output) {
         n.output = path.resolve(appRoot, 'sbtpublish');
     }
-    if(!n.ignore) {
+    if (!n.ignore) {
         n.ignore = [];
     }
     return n;

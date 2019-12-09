@@ -31,11 +31,13 @@ module.exports = {
     output: 'cccc',
     ignore: [
         'build'
-    ]
+    ],
+    lastModify: '1d'
 }
 ```
 - output  Output folder
 - ignore Ignore published files or folders
+- lastModify /^([0-9.]+)([smhdMy]?)$/ 
 # publish
 ```
 npm run sbtpublishconfig
