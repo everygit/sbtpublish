@@ -1,6 +1,6 @@
 {
   "name": "sbtpublish",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Publish the project file to the specified folder, and then it can be easily deployed to the server through tools such as FTP",
   "main": "index.js",
   "bin": {

@@ -105,7 +105,6 @@ function isModifyWithinCertainTime(stat) {
 
         var lastDatetime = convertDate(cnf.lastModify);
         if(lastDatetime) {
-            console.log(stat.mtimeMs, lastDatetime.getTime());
             return stat.mtimeMs >= lastDatetime.getTime();
         } else {
             return true;
