@@ -2,6 +2,7 @@ const program = require('commander');
 const path = require('path');
 const fs = require('fs');
 const { mkdirsSync, rmdirsSync, cpdirsSync } = require('@xiaoerr/io');
+const convertDate = require('./date');
 require('colors');
 
 program
@@ -80,24 +81,37 @@ function isModifyWithinCertainTime(stat) {
 
     if (!cnf.lastModify) return true;
     const reg = /^([0-9.]+)([smhdMy]?)$/.exec(cnf.lastModify);
-    if (!reg) return true;
+    if (reg) {
+        const d = {
+            s: 1000,
+            m: 60 * 1000,
+            h: 60 * 60 * 1000,
+            d: 24 * 60 * 60 * 1000,
+            M: 30 * 24 * 60 * 60 * 1000,
+            y: 365 * 24 * 60 * 60 * 1000
+        };
 
-    const d = {
-        s: 1000,
-        m: 60 * 1000,
-        h: 60 * 60 * 1000,
-        d: 24 * 60 * 60 * 1000,
-        M: 30 * 24 * 60 * 60 * 1000,
-        y: 365 * 24 * 60 * 60 * 1000
-    };
+        var t = parseFloat(reg[1]) * d[reg[2] || 's'];
 
-    var t = parseFloat(reg[1]) * d[reg[2] || 's'];
+        if (typeof stat === "string") {
+            stat = fs.statSync(stat);
+        }
 
-    if (typeof stat === "string") {
-        stat = fs.statSync(stat);
+        return Date.now() - stat.mtimeMs < t
+    } else {
+        if (typeof stat === "string") {
+            stat = fs.statSync(stat);
+        }
+
+        var lastDatetime = convertDate(str);
+        console.log(lastDatetime);
+        if(lastDatetime) {
+            console.log(stat.mtimeMs, lastDatetime.getTime());
+            return stat.mtimeMs >= lastDatetime.getTime();
+        } else {
+            return true;
+        }
     }
-
-    return Date.now() - stat.mtimeMs < t
 }
 
 

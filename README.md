@@ -20,7 +20,7 @@ npm install sbtpublish
     "sbtpublish": "sbtpublish"
   },
   "dependencies": {
-    "sbtpublish": "file:D:/sunbt/sbtpublish"
+    "sbtpublish": "sbtpublish"
   }
 }
 ```
